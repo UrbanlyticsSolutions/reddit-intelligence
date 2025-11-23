@@ -1,0 +1,67 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REGION: us-central1
+  REPO_NAME: reddit-intelligence
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Authenticate to Google Cloud
+      # Note: Requires 'GCP_SA_KEY' secret (Service Account Key JSON)
+      # Best practice is Workload Identity Federation, but Key is simpler for setup.
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      # Set up Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Configure Docker to use gcloud as a credential helper
+      - name: Docker Auth
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      # Build and Push Container
+      - name: Build and Push Container
+        run: |
+          docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/app:${{ github.sha }} .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/app:${{ github.sha }}
+          docker tag ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/app:${{ github.sha }} ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/app:latest
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/app:latest
+
+      # Deploy to Cloud Run Job
+      - name: Deploy to Cloud Run Job
+        run: |
+          gcloud run jobs deploy reddit-intelligence-job \
+            --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/app:latest \
+            --region ${{ env.REGION }} \
+            --set-env-vars REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }} \
+            --set-env-vars REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }} \
+            --set-env-vars REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }} \
+            --set-env-vars REDDIT_USERNAME=${{ secrets.REDDIT_USERNAME }} \
+            --set-env-vars REDDIT_PASSWORD=${{ secrets.REDDIT_PASSWORD }} \
+            --set-env-vars FMP_API_KEY=${{ secrets.FMP_API_KEY }} \
+            --set-env-vars FRED_API_KEY=${{ secrets.FRED_API_KEY }} \
+            --set-env-vars DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }} \
+            --set-env-vars GCS_BUCKET_NAME=stock-479103-deepseek-results \
+            --max-retries 0 \
+            --task-timeout 30m
