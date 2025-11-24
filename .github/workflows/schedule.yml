@@ -33,6 +33,8 @@ jobs:
 
       - name: Prepare GitHub Pages
         run: |
+          # Create outputs directory
+          mkdir -p outputs
           # Copy frontend files to outputs
           cp frontend/index.html outputs/
           cp frontend/app.js outputs/
