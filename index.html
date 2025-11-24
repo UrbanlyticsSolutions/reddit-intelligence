@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reddit Intelligence – DeepSeek Insights</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-endpoint="https://storage.googleapis.com/stock-479103-deepseek-results/latest_deepseek_result.json">
+  <header class="page-header">
+    <div class="header-text">
+      <h1>Reddit Intelligence</h1>
+      <p>Live DeepSeek-generated market intelligence from the Google Cloud workflow.</p>
+    </div>
+    <button id="refreshButton" class="ghost-button" type="button">Refresh</button>
+  </header>
+
+  <main>
+    <section class="status-banner" id="statusBanner" hidden>
+      <span id="statusMessage"></span>
+    </section>
+
+    <section class="summary-card">
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="summary-label">Generated</span>
+          <span class="summary-value" id="generatedAt">—</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Run Timestamp</span>
+          <span class="summary-value" id="runTimestamp">—</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total Posts</span>
+          <span class="summary-value" id="totalPosts">—</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Top Symbols</span>
+          <span class="summary-value" id="topSymbols">—</span>
+        </div>
+      </div>
+      <div class="summary-breakdown">
+        <div>
+          <h3>Collection Breakdown</h3>
+          <ul id="collectionBreakdown"></ul>
+        </div>
+        <div>
+          <h3>Average Credibility</h3>
+          <ul id="credibilityBreakdown"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>DeepSeek Market Analysis</h2>
+      <article class="analysis-block" id="marketAnalysis">Loading…</article>
+    </section>
+
+    <section class="panel">
+      <h2>DeepSeek Risk Assessment</h2>
+      <article class="analysis-block" id="riskAssessment">Loading…</article>
+    </section>
+
+    <section class="panel">
+      <h2>DeepSeek Symbol Analyses</h2>
+      <div id="symbolAnalyses" class="symbol-grid"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Top Retail Insights</h2>
+      <ol id="topInsights" class="insights-list"></ol>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <small>
+      Hosted on GitHub Pages. Data sourced from Cloud Run job uploads to Google Cloud Storage.
+      Configure alternate sources with <code>?source=&lt;url&gt;</code>.
+    </small>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+
+</html>
