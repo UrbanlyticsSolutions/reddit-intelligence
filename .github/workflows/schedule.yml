@@ -15,33 +15,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      # Authenticate to Google Cloud
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          python-version: '3.9'
-          cache: 'pip'
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+      # Set up Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
-      - name: Run Analysis Workflow
-        env:
-          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
-          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
-          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
-          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
-          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
-          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
-          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          GCS_BUCKET_NAME: stock-479103-deepseek-results
-          GOOGLE_APPLICATION_CREDENTIALS: gcp-key.json
+      # Execute Cloud Run Job
+      - name: Execute Cloud Run Job
         run: |
-          # Write GCP service account key to file
-          echo '${{ secrets.GCP_SA_KEY }}' > gcp-key.json
-          # Run the comprehensive analysis for the day
-          python run_workflow.py --comprehensive --horizon day
+          gcloud run jobs execute reddit-intelligence-job --region us-central1 --wait
 
       - name: Prepare GitHub Pages
         run: |
