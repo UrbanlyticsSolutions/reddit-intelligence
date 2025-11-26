@@ -1,0 +1,16 @@
+﻿run-analysis	Prepare GitHub Pages	∩╗┐2025-11-23T21:35:38.5410213Z ##[group]Run # Copy frontend files to outputs
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5410541Z [36;1m# Copy frontend files to outputs[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5410801Z [36;1mcp frontend/index.html outputs/[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5411042Z [36;1mcp frontend/app.js outputs/[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5411291Z [36;1mcp frontend/styles.css outputs/[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430052Z shell: /usr/bin/bash -e {0}
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430279Z env:
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430522Z   pythonLocation: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430900Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib/pkgconfig
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5431259Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5431753Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5432069Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5432397Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5432664Z ##[endgroup]
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5480493Z cp: cannot create regular file 'outputs/': Not a directory
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5493622Z ##[error]Process completed with exit code 1.

@@ -22,7 +22,8 @@ class RedditClient:
                  username: str,
                  password: str,
                  db_path: Optional[str] = None,
-                 rate_limit_delay: float = 1.0):
+                 rate_limit_delay: float = 1.0,
+                 proxy_url: Optional[str] = None):
         """
         Initialize Reddit client with OAuth2 authentication
 
@@ -45,10 +46,16 @@ class RedditClient:
         self._last_request_time = 0
         self._access_token = None
         self._token_expires_at = None
+        self.proxy_url = proxy_url.strip() if proxy_url else None
 
         # Initialize session
         self.session = requests.Session()
         self.session.headers.update({'User-Agent': self.user_agent})
+        if self.proxy_url:
+            self.session.proxies.update({
+                'http': self.proxy_url,
+                'https': self.proxy_url,
+            })
 
         # Authenticate on initialization
         self._authenticate()
@@ -73,7 +80,13 @@ class RedditClient:
             'password': self.password
         }
 
-        response = requests.post(auth_url, headers=headers, data=data, timeout=15)
+        response = requests.post(
+            auth_url,
+            headers=headers,
+            data=data,
+            timeout=15,
+            proxies=self.session.proxies or None,
+        )
         response.raise_for_status()
 
         token_data = response.json()
@@ -406,5 +419,6 @@ def create_reddit_client_from_env(rate_limit_delay: float = 1.0) -> RedditClient
         username=os.getenv('REDDIT_USERNAME', ''),
         password=os.getenv('REDDIT_PASSWORD', ''),
         db_path=os.getenv('REDDIT_DB_PATH'),
-        rate_limit_delay=rate_limit_delay
+        rate_limit_delay=rate_limit_delay,
+        proxy_url=os.getenv('REDDIT_PROXY_URL') or os.getenv('HTTP_PROXY') or os.getenv('HTTPS_PROXY')
     )

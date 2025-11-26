@@ -1,5 +1,12 @@
 # Reddit Intelligence + DeepSeek AI - Complete Workflow Guide
 
+## Local-Only Mode
+
+- Cloud uploads are disabled unless you export `ENABLE_GCS_UPLOADS=true` alongside your bucket credentials. Leave it unset to keep every run on your workstation.
+- GitHub Actions deploys are gated by `ENABLE_CLOUD_DEPLOY`/`ENABLE_SCHEDULED_RELEASES` in `.github/workflows/`. Both default to `'false'`, so no jobs will touch GCP until you opt back in.
+
+Run `python run_workflow.py ...` locally and review the generated files under `outputs/`.
+
 ## 🚀 THREE POWERFUL WORKFLOWS
 
 ### 1. **AI-Powered Trending News Discovery** ⭐ NEW!

@@ -10,9 +10,11 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: us-central1
   REPO_NAME: reddit-intelligence
+  ENABLE_CLOUD_DEPLOY: 'false'  # Flip to 'true' when ready to deploy
 
 jobs:
   deploy:
+    if: ${{ env.ENABLE_CLOUD_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'

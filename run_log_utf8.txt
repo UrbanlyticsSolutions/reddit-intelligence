@@ -1,0 +1,351 @@
+﻿run-analysis	Set up job	∩╗┐2025-11-23T21:35:23.4038792Z Current runner version: '2.329.0'
+run-analysis	Set up job	2025-11-23T21:35:23.4060339Z ##[group]Runner Image Provisioner
+run-analysis	Set up job	2025-11-23T21:35:23.4061056Z Hosted Compute Agent
+run-analysis	Set up job	2025-11-23T21:35:23.4061820Z Version: 20251016.436
+run-analysis	Set up job	2025-11-23T21:35:23.4062449Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+run-analysis	Set up job	2025-11-23T21:35:23.4063090Z Build Date: 2025-10-15T20:44:12Z
+run-analysis	Set up job	2025-11-23T21:35:23.4063585Z ##[endgroup]
+run-analysis	Set up job	2025-11-23T21:35:23.4064114Z ##[group]Operating System
+run-analysis	Set up job	2025-11-23T21:35:23.4064582Z Ubuntu
+run-analysis	Set up job	2025-11-23T21:35:23.4064997Z 24.04.3
+run-analysis	Set up job	2025-11-23T21:35:23.4065430Z LTS
+run-analysis	Set up job	2025-11-23T21:35:23.4065802Z ##[endgroup]
+run-analysis	Set up job	2025-11-23T21:35:23.4066220Z ##[group]Runner Image
+run-analysis	Set up job	2025-11-23T21:35:23.4066710Z Image: ubuntu-24.04
+run-analysis	Set up job	2025-11-23T21:35:23.4067150Z Version: 20251112.124.1
+run-analysis	Set up job	2025-11-23T21:35:23.4068010Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251112.124/images/ubuntu/Ubuntu2404-Readme.md
+run-analysis	Set up job	2025-11-23T21:35:23.4069235Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251112.124
+run-analysis	Set up job	2025-11-23T21:35:23.4070219Z ##[endgroup]
+run-analysis	Set up job	2025-11-23T21:35:23.4071129Z ##[group]GITHUB_TOKEN Permissions
+run-analysis	Set up job	2025-11-23T21:35:23.4073033Z Contents: write
+run-analysis	Set up job	2025-11-23T21:35:23.4073539Z Metadata: read
+run-analysis	Set up job	2025-11-23T21:35:23.4073992Z ##[endgroup]
+run-analysis	Set up job	2025-11-23T21:35:23.4076119Z Secret source: Actions
+run-analysis	Set up job	2025-11-23T21:35:23.4076925Z Prepare workflow directory
+run-analysis	Set up job	2025-11-23T21:35:23.4423143Z Prepare all required actions
+run-analysis	Set up job	2025-11-23T21:35:23.4459277Z Getting action download info
+run-analysis	Set up job	2025-11-23T21:35:23.8139836Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+run-analysis	Set up job	2025-11-23T21:35:24.6323744Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+run-analysis	Set up job	2025-11-23T21:35:24.7388312Z Download action repository 'peaceiris/actions-gh-pages@v3' (SHA:373f7f263a76c20808c831209c920827a82a2847)
+run-analysis	Set up job	2025-11-23T21:35:25.6523445Z Complete job name: run-analysis
+run-analysis	Checkout	∩╗┐2025-11-23T21:35:25.7225385Z ##[group]Run actions/checkout@v4
+run-analysis	Checkout	2025-11-23T21:35:25.7226697Z with:
+run-analysis	Checkout	2025-11-23T21:35:25.7227565Z   repository: UrbanlyticsSolutions/reddit-intelligence
+run-analysis	Checkout	2025-11-23T21:35:25.7229117Z   token: ***
+run-analysis	Checkout	2025-11-23T21:35:25.7229811Z   ssh-strict: true
+run-analysis	Checkout	2025-11-23T21:35:25.7230580Z   ssh-user: git
+run-analysis	Checkout	2025-11-23T21:35:25.7231394Z   persist-credentials: true
+run-analysis	Checkout	2025-11-23T21:35:25.7232480Z   clean: true
+run-analysis	Checkout	2025-11-23T21:35:25.7233244Z   sparse-checkout-cone-mode: true
+run-analysis	Checkout	2025-11-23T21:35:25.7234180Z   fetch-depth: 1
+run-analysis	Checkout	2025-11-23T21:35:25.7234940Z   fetch-tags: false
+run-analysis	Checkout	2025-11-23T21:35:25.7235708Z   show-progress: true
+run-analysis	Checkout	2025-11-23T21:35:25.7236521Z   lfs: false
+run-analysis	Checkout	2025-11-23T21:35:25.7237205Z   submodules: false
+run-analysis	Checkout	2025-11-23T21:35:25.7237995Z   set-safe-directory: true
+run-analysis	Checkout	2025-11-23T21:35:25.7239159Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:25.8274585Z Syncing repository: UrbanlyticsSolutions/reddit-intelligence
+run-analysis	Checkout	2025-11-23T21:35:25.8277700Z ##[group]Getting Git version info
+run-analysis	Checkout	2025-11-23T21:35:25.8279261Z Working directory is '/home/runner/work/reddit-intelligence/reddit-intelligence'
+run-analysis	Checkout	2025-11-23T21:35:25.8281746Z [command]/usr/bin/git version
+run-analysis	Checkout	2025-11-23T21:35:25.8316218Z git version 2.51.2
+run-analysis	Checkout	2025-11-23T21:35:25.8341295Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:25.8356188Z Temporarily overriding HOME='/home/runner/work/_temp/1dd38454-3942-461e-9059-6501c9a37772' before making global git config changes
+run-analysis	Checkout	2025-11-23T21:35:25.8360563Z Adding repository directory to the temporary git global config as a safe directory
+run-analysis	Checkout	2025-11-23T21:35:25.8364561Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reddit-intelligence/reddit-intelligence
+run-analysis	Checkout	2025-11-23T21:35:25.8400185Z Deleting the contents of '/home/runner/work/reddit-intelligence/reddit-intelligence'
+run-analysis	Checkout	2025-11-23T21:35:25.8404067Z ##[group]Initializing the repository
+run-analysis	Checkout	2025-11-23T21:35:25.8408618Z [command]/usr/bin/git init /home/runner/work/reddit-intelligence/reddit-intelligence
+run-analysis	Checkout	2025-11-23T21:35:25.8494339Z hint: Using 'master' as the name for the initial branch. This default branch name
+run-analysis	Checkout	2025-11-23T21:35:25.8497416Z hint: is subject to change. To configure the initial branch name to use in all
+run-analysis	Checkout	2025-11-23T21:35:25.8499670Z hint: of your new repositories, which will suppress this warning, call:
+run-analysis	Checkout	2025-11-23T21:35:25.8500911Z hint:
+run-analysis	Checkout	2025-11-23T21:35:25.8502283Z hint: 	git config --global init.defaultBranch <name>
+run-analysis	Checkout	2025-11-23T21:35:25.8504290Z hint:
+run-analysis	Checkout	2025-11-23T21:35:25.8505409Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+run-analysis	Checkout	2025-11-23T21:35:25.8507276Z hint: 'development'. The just-created branch can be renamed via this command:
+run-analysis	Checkout	2025-11-23T21:35:25.8508598Z hint:
+run-analysis	Checkout	2025-11-23T21:35:25.8509333Z hint: 	git branch -m <name>
+run-analysis	Checkout	2025-11-23T21:35:25.8510188Z hint:
+run-analysis	Checkout	2025-11-23T21:35:25.8511304Z hint: Disable this message with "git config set advice.defaultBranchName false"
+run-analysis	Checkout	2025-11-23T21:35:25.8513522Z Initialized empty Git repository in /home/runner/work/reddit-intelligence/reddit-intelligence/.git/
+run-analysis	Checkout	2025-11-23T21:35:25.8613823Z [command]/usr/bin/git remote add origin https://github.com/UrbanlyticsSolutions/reddit-intelligence
+run-analysis	Checkout	2025-11-23T21:35:25.8618501Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:25.8619767Z ##[group]Disabling automatic garbage collection
+run-analysis	Checkout	2025-11-23T21:35:25.8620923Z [command]/usr/bin/git config --local gc.auto 0
+run-analysis	Checkout	2025-11-23T21:35:25.8623768Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:25.8624908Z ##[group]Setting up auth
+run-analysis	Checkout	2025-11-23T21:35:25.8626108Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+run-analysis	Checkout	2025-11-23T21:35:25.8629692Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+run-analysis	Checkout	2025-11-23T21:35:25.8856340Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+run-analysis	Checkout	2025-11-23T21:35:25.8878751Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+run-analysis	Checkout	2025-11-23T21:35:25.9040786Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+run-analysis	Checkout	2025-11-23T21:35:25.9064157Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+run-analysis	Checkout	2025-11-23T21:35:25.9233599Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+run-analysis	Checkout	2025-11-23T21:35:25.9259729Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:25.9261956Z ##[group]Fetching the repository
+run-analysis	Checkout	2025-11-23T21:35:25.9270069Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +269e485a4071576ea38b53ce3b8ef1464dbc7cc1:refs/remotes/origin/master
+run-analysis	Checkout	2025-11-23T21:35:26.3687236Z From https://github.com/UrbanlyticsSolutions/reddit-intelligence
+run-analysis	Checkout	2025-11-23T21:35:26.3689312Z  * [new ref]         269e485a4071576ea38b53ce3b8ef1464dbc7cc1 -> origin/master
+run-analysis	Checkout	2025-11-23T21:35:26.3713681Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:26.3714443Z ##[group]Determining the checkout info
+run-analysis	Checkout	2025-11-23T21:35:26.3715999Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:26.3721153Z [command]/usr/bin/git sparse-checkout disable
+run-analysis	Checkout	2025-11-23T21:35:26.3759443Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+run-analysis	Checkout	2025-11-23T21:35:26.3779882Z ##[group]Checking out the ref
+run-analysis	Checkout	2025-11-23T21:35:26.3784211Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+run-analysis	Checkout	2025-11-23T21:35:26.3846485Z Reset branch 'master'
+run-analysis	Checkout	2025-11-23T21:35:26.3848608Z branch 'master' set up to track 'origin/master'.
+run-analysis	Checkout	2025-11-23T21:35:26.3852975Z ##[endgroup]
+run-analysis	Checkout	2025-11-23T21:35:26.3880051Z [command]/usr/bin/git log -1 --format=%H
+run-analysis	Checkout	2025-11-23T21:35:26.3896632Z 269e485a4071576ea38b53ce3b8ef1464dbc7cc1
+run-analysis	Set up Python	∩╗┐2025-11-23T21:35:26.4083198Z ##[group]Run actions/setup-python@v5
+run-analysis	Set up Python	2025-11-23T21:35:26.4083520Z with:
+run-analysis	Set up Python	2025-11-23T21:35:26.4083746Z   python-version: 3.9
+run-analysis	Set up Python	2025-11-23T21:35:26.4083986Z   cache: pip
+run-analysis	Set up Python	2025-11-23T21:35:26.4084226Z   check-latest: false
+run-analysis	Set up Python	2025-11-23T21:35:26.4084634Z   token: ***
+run-analysis	Set up Python	2025-11-23T21:35:26.4084864Z   update-environment: true
+run-analysis	Set up Python	2025-11-23T21:35:26.4085136Z   allow-prereleases: false
+run-analysis	Set up Python	2025-11-23T21:35:26.4085395Z   freethreaded: false
+run-analysis	Set up Python	2025-11-23T21:35:26.4085762Z ##[endgroup]
+run-analysis	Set up Python	2025-11-23T21:35:26.5615138Z ##[group]Installed versions
+run-analysis	Set up Python	2025-11-23T21:35:26.6615411Z Successfully set up CPython (3.9.25)
+run-analysis	Set up Python	2025-11-23T21:35:26.6616367Z ##[endgroup]
+run-analysis	Set up Python	2025-11-23T21:35:26.7146605Z [command]/opt/hostedtoolcache/Python/3.9.25/x64/bin/pip cache dir
+run-analysis	Set up Python	2025-11-23T21:35:27.9000247Z /home/runner/.cache/pip
+run-analysis	Set up Python	2025-11-23T21:35:28.2217447Z pip cache is not found
+run-analysis	Install dependencies	∩╗┐2025-11-23T21:35:28.2314077Z ##[group]Run pip install -r requirements.txt
+run-analysis	Install dependencies	2025-11-23T21:35:28.2314563Z [36;1mpip install -r requirements.txt[0m
+run-analysis	Install dependencies	2025-11-23T21:35:28.2339106Z shell: /usr/bin/bash -e {0}
+run-analysis	Install dependencies	2025-11-23T21:35:28.2339367Z env:
+run-analysis	Install dependencies	2025-11-23T21:35:28.2339628Z   pythonLocation: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Install dependencies	2025-11-23T21:35:28.2340031Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib/pkgconfig
+run-analysis	Install dependencies	2025-11-23T21:35:28.2340392Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Install dependencies	2025-11-23T21:35:28.2340724Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Install dependencies	2025-11-23T21:35:28.2341054Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Install dependencies	2025-11-23T21:35:28.2341380Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib
+run-analysis	Install dependencies	2025-11-23T21:35:28.2341798Z ##[endgroup]
+run-analysis	Install dependencies	2025-11-23T21:35:29.4549709Z Collecting requests>=2.28.0 (from -r requirements.txt (line 1))
+run-analysis	Install dependencies	2025-11-23T21:35:29.5143365Z   Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.5429468Z Collecting python-dotenv>=1.0.0 (from -r requirements.txt (line 2))
+run-analysis	Install dependencies	2025-11-23T21:35:29.5544714Z   Downloading python_dotenv-1.2.1-py3-none-any.whl.metadata (25 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.5819809Z Collecting feedparser>=6.0.10 (from -r requirements.txt (line 3))
+run-analysis	Install dependencies	2025-11-23T21:35:29.5924006Z   Downloading feedparser-6.0.12-py3-none-any.whl.metadata (2.7 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.6919355Z Collecting openai>=1.0.0 (from -r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:29.7025034Z   Downloading openai-2.8.1-py3-none-any.whl.metadata (29 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.7449598Z Collecting google-cloud-storage>=2.14.0 (from -r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:29.7579753Z   Downloading google_cloud_storage-3.6.0-py3-none-any.whl.metadata (13 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.7923422Z Collecting praw>=7.7.0 (from -r requirements.txt (line 6))
+run-analysis	Install dependencies	2025-11-23T21:35:29.8034055Z   Downloading praw-7.8.1-py3-none-any.whl.metadata (9.4 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.8314534Z Collecting prawcore>=2.3.0 (from -r requirements.txt (line 7))
+run-analysis	Install dependencies	2025-11-23T21:35:29.8424944Z   Downloading prawcore-3.0.2-py3-none-any.whl.metadata (4.2 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.9415822Z Collecting charset_normalizer<4,>=2 (from requests>=2.28.0->-r requirements.txt (line 1))
+run-analysis	Install dependencies	2025-11-23T21:35:29.9525842Z   Downloading charset_normalizer-3.4.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:29.9761723Z Collecting idna<4,>=2.5 (from requests>=2.28.0->-r requirements.txt (line 1))
+run-analysis	Install dependencies	2025-11-23T21:35:29.9872958Z   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:30.0249874Z Collecting urllib3<3,>=1.21.1 (from requests>=2.28.0->-r requirements.txt (line 1))
+run-analysis	Install dependencies	2025-11-23T21:35:30.0353454Z   Downloading urllib3-2.5.0-py3-none-any.whl.metadata (6.5 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:30.0672098Z Collecting certifi>=2017.4.17 (from requests>=2.28.0->-r requirements.txt (line 1))
+run-analysis	Install dependencies	2025-11-23T21:35:30.0778143Z   Downloading certifi-2025.11.12-py3-none-any.whl.metadata (2.5 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:30.0962134Z Collecting sgmllib3k (from feedparser>=6.0.10->-r requirements.txt (line 3))
+run-analysis	Install dependencies	2025-11-23T21:35:30.1065136Z   Downloading sgmllib3k-1.0.0.tar.gz (5.8 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:30.1128119Z   Installing build dependencies: started
+run-analysis	Install dependencies	2025-11-23T21:35:31.4726427Z   Installing build dependencies: finished with status 'done'
+run-analysis	Install dependencies	2025-11-23T21:35:31.4734486Z   Getting requirements to build wheel: started
+run-analysis	Install dependencies	2025-11-23T21:35:31.7774636Z   Getting requirements to build wheel: finished with status 'done'
+run-analysis	Install dependencies	2025-11-23T21:35:31.7787162Z   Preparing metadata (pyproject.toml): started
+run-analysis	Install dependencies	2025-11-23T21:35:31.9367132Z   Preparing metadata (pyproject.toml): finished with status 'done'
+run-analysis	Install dependencies	2025-11-23T21:35:31.9664823Z Collecting anyio<5,>=3.5.0 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:31.9797409Z   Downloading anyio-4.11.0-py3-none-any.whl.metadata (4.1 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.0002420Z Collecting distro<2,>=1.7.0 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.0104939Z   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.0394834Z Collecting httpx<1,>=0.23.0 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.0501731Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.1387401Z Collecting jiter<1,>=0.10.0 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.1501021Z   Downloading jiter-0.12.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.2929513Z Collecting pydantic<3,>=1.9.0 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.3035489Z   Downloading pydantic-2.12.4-py3-none-any.whl.metadata (89 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.3305306Z Collecting sniffio (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.3409193Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.4040741Z Collecting tqdm>4 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.4195041Z   Downloading tqdm-4.67.1-py3-none-any.whl.metadata (57 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.4514812Z Collecting typing-extensions<5,>=4.11 (from openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.4629244Z   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.4847414Z Collecting exceptiongroup>=1.0.2 (from anyio<5,>=3.5.0->openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.4952944Z   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.5331242Z Collecting httpcore==1.* (from httpx<1,>=0.23.0->openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.5434942Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.5699757Z Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.23.0->openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.5805122Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:32.5993687Z Collecting annotated-types>=0.6.0 (from pydantic<3,>=1.9.0->openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:32.6097006Z   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.3602342Z Collecting pydantic-core==2.41.5 (from pydantic<3,>=1.9.0->openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:33.3716696Z   Downloading pydantic_core-2.41.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.3936737Z Collecting typing-inspection>=0.4.2 (from pydantic<3,>=1.9.0->openai>=1.0.0->-r requirements.txt (line 4))
+run-analysis	Install dependencies	2025-11-23T21:35:33.4056479Z   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.4580131Z Collecting google-auth<3.0.0,>=2.26.1 (from google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:33.4689655Z   Downloading google_auth-2.43.0-py2.py3-none-any.whl.metadata (6.6 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.5203458Z Collecting google-api-core<3.0.0,>=2.27.0 (from google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:33.5310475Z   Downloading google_api_core-2.28.1-py3-none-any.whl.metadata (3.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.5609162Z Collecting google-cloud-core<3.0.0,>=2.4.2 (from google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:33.5716338Z   Downloading google_cloud_core-2.5.0-py3-none-any.whl.metadata (3.1 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.6319563Z Collecting google-resumable-media<3.0.0,>=2.7.2 (from google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:33.6428807Z   Downloading google_resumable_media-2.8.0-py3-none-any.whl.metadata (2.6 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.7094795Z Collecting google-crc32c<2.0.0,>=1.1.3 (from google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:33.7209167Z   Downloading google_crc32c-1.7.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.7490475Z Collecting googleapis-common-protos<2.0.0,>=1.56.2 (from google-api-core<3.0.0,>=2.27.0->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:33.7594951Z   Downloading googleapis_common_protos-1.72.0-py3-none-any.whl.metadata (9.4 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:33.9972699Z Collecting protobuf!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<7.0.0,>=3.19.5 (from google-api-core<3.0.0,>=2.27.0->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:34.0080811Z   Downloading protobuf-6.33.1-cp39-abi3-manylinux2014_x86_64.whl.metadata (593 bytes)
+run-analysis	Install dependencies	2025-11-23T21:35:34.0368343Z Collecting proto-plus<2.0.0,>=1.22.3 (from google-api-core<3.0.0,>=2.27.0->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:34.0476559Z   Downloading proto_plus-1.26.1-py3-none-any.whl.metadata (2.2 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.1016727Z Collecting cachetools<7.0,>=2.0.0 (from google-auth<3.0.0,>=2.26.1->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:34.1120532Z   Downloading cachetools-6.2.2-py3-none-any.whl.metadata (5.6 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.1388386Z Collecting pyasn1-modules>=0.2.1 (from google-auth<3.0.0,>=2.26.1->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:34.1493533Z   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.1725691Z Collecting rsa<5,>=3.1.4 (from google-auth<3.0.0,>=2.26.1->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:34.1829364Z   Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.3843012Z Collecting pyasn1>=0.1.3 (from rsa<5,>=3.1.4->google-auth<3.0.0,>=2.26.1->google-cloud-storage>=2.14.0->-r requirements.txt (line 5))
+run-analysis	Install dependencies	2025-11-23T21:35:34.3954633Z   Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.4026325Z Collecting prawcore>=2.3.0 (from -r requirements.txt (line 7))
+run-analysis	Install dependencies	2025-11-23T21:35:34.4141689Z   Downloading prawcore-2.4.0-py3-none-any.whl.metadata (5.0 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.4346717Z Collecting update_checker>=0.18 (from praw>=7.7.0->-r requirements.txt (line 6))
+run-analysis	Install dependencies	2025-11-23T21:35:34.4460119Z   Downloading update_checker-0.18.0-py3-none-any.whl.metadata (2.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.4780068Z Collecting websocket-client>=0.54.0 (from praw>=7.7.0->-r requirements.txt (line 6))
+run-analysis	Install dependencies	2025-11-23T21:35:34.4883065Z   Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.5437347Z Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.5563844Z Downloading charset_normalizer-3.4.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (153 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.5714168Z Downloading idna-3.11-py3-none-any.whl (71 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.5852263Z Downloading urllib3-2.5.0-py3-none-any.whl (129 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.5985031Z Downloading python_dotenv-1.2.1-py3-none-any.whl (21 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.6107097Z Downloading feedparser-6.0.12-py3-none-any.whl (81 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.6231822Z Downloading openai-2.8.1-py3-none-any.whl (1.0 MB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.6445921Z    ΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöü 1.0/1.0 MB 45.1 MB/s  0:00:00
+run-analysis	Install dependencies	2025-11-23T21:35:34.6553227Z Downloading anyio-4.11.0-py3-none-any.whl (109 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.6678218Z Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.6810542Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.6936921Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.7073143Z Downloading jiter-0.12.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (366 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.7248215Z Downloading pydantic-2.12.4-py3-none-any.whl (463 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.7474370Z Downloading pydantic_core-2.41.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.7629621Z    ΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöüΓöü 2.1/2.1 MB 136.6 MB/s  0:00:00
+run-analysis	Install dependencies	2025-11-23T21:35:34.7733901Z Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.7856817Z Downloading google_cloud_storage-3.6.0-py3-none-any.whl (299 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8008758Z Downloading google_api_core-2.28.1-py3-none-any.whl (173 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8134462Z Downloading google_auth-2.43.0-py2.py3-none-any.whl (223 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8262905Z Downloading cachetools-6.2.2-py3-none-any.whl (11 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8385704Z Downloading google_cloud_core-2.5.0-py3-none-any.whl (29 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8521233Z Downloading google_crc32c-1.7.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (37 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8648040Z Downloading google_resumable_media-2.8.0-py3-none-any.whl (81 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8775511Z Downloading googleapis_common_protos-1.72.0-py3-none-any.whl (297 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.8905939Z Downloading proto_plus-1.26.1-py3-none-any.whl (50 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9032858Z Downloading protobuf-6.33.1-cp39-abi3-manylinux2014_x86_64.whl (323 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9163135Z Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9292906Z Downloading praw-7.8.1-py3-none-any.whl (189 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9423941Z Downloading prawcore-2.4.0-py3-none-any.whl (17 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9546547Z Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9678696Z Downloading certifi-2025.11.12-py3-none-any.whl (159 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9815122Z Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:34.9944252Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0070275Z Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0203287Z Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0328166Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0450913Z Downloading tqdm-4.67.1-py3-none-any.whl (78 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0575778Z Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0707181Z Downloading update_checker-0.18.0-py3-none-any.whl (7.0 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.0829237Z Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
+run-analysis	Install dependencies	2025-11-23T21:35:35.1242859Z Building wheels for collected packages: sgmllib3k
+run-analysis	Install dependencies	2025-11-23T21:35:35.1249316Z   Building wheel for sgmllib3k (pyproject.toml): started
+run-analysis	Install dependencies	2025-11-23T21:35:35.3009435Z   Building wheel for sgmllib3k (pyproject.toml): finished with status 'done'
+run-analysis	Install dependencies	2025-11-23T21:35:35.3017261Z   Created wheel for sgmllib3k: filename=sgmllib3k-1.0.0-py3-none-any.whl size=6089 sha256=1f0a3f3a4b54c52fe84a2d09902d331ac828cc9a40d2dc2fa4bf52ba2cfd5214
+run-analysis	Install dependencies	2025-11-23T21:35:35.3018710Z   Stored in directory: /home/runner/.cache/pip/wheels/65/7a/a7/78c287f64e401255dff4c13fdbc672fed5efbfd21c530114e1
+run-analysis	Install dependencies	2025-11-23T21:35:35.3036995Z Successfully built sgmllib3k
+run-analysis	Install dependencies	2025-11-23T21:35:35.3933169Z Installing collected packages: sgmllib3k, websocket-client, urllib3, typing-extensions, tqdm, sniffio, python-dotenv, pyasn1, protobuf, jiter, idna, h11, google-crc32c, feedparser, distro, charset_normalizer, certifi, cachetools, annotated-types, typing-inspection, rsa, requests, pydantic-core, pyasn1-modules, proto-plus, httpcore, googleapis-common-protos, google-resumable-media, exceptiongroup, update_checker, pydantic, prawcore, google-auth, anyio, praw, httpx, google-api-core, openai, google-cloud-core, google-cloud-storage
+run-analysis	Install dependencies	2025-11-23T21:35:37.4253109Z 
+run-analysis	Install dependencies	2025-11-23T21:35:37.4309240Z Successfully installed annotated-types-0.7.0 anyio-4.11.0 cachetools-6.2.2 certifi-2025.11.12 charset_normalizer-3.4.4 distro-1.9.0 exceptiongroup-1.3.1 feedparser-6.0.12 google-api-core-2.28.1 google-auth-2.43.0 google-cloud-core-2.5.0 google-cloud-storage-3.6.0 google-crc32c-1.7.1 google-resumable-media-2.8.0 googleapis-common-protos-1.72.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.11 jiter-0.12.0 openai-2.8.1 praw-7.8.1 prawcore-2.4.0 proto-plus-1.26.1 protobuf-6.33.1 pyasn1-0.6.1 pyasn1-modules-0.4.2 pydantic-2.12.4 pydantic-core-2.41.5 python-dotenv-1.2.1 requests-2.32.5 rsa-4.9.1 sgmllib3k-1.0.0 sniffio-1.3.1 tqdm-4.67.1 typing-extensions-4.15.0 typing-inspection-0.4.2 update_checker-0.18.0 urllib3-2.5.0 websocket-client-1.9.0
+run-analysis	Run Analysis Workflow	∩╗┐2025-11-23T21:35:37.7220204Z ##[group]Run # Run the comprehensive analysis for the day
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7220604Z [36;1m# Run the comprehensive analysis for the day[0m
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7220942Z [36;1mpython run_workflow.py --comprehensive --horizon day[0m
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7239922Z shell: /usr/bin/bash -e {0}
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7240146Z env:
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7240378Z   pythonLocation: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7240748Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib/pkgconfig
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7241107Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7241423Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7241952Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7242274Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7242552Z   REDDIT_CLIENT_ID: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7242749Z   REDDIT_CLIENT_SECRET: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7242937Z   REDDIT_USER_AGENT: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7243166Z   REDDIT_USERNAME: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7243349Z   REDDIT_PASSWORD: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7243518Z   FMP_API_KEY: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7243691Z   FRED_API_KEY: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7243857Z   DEEPSEEK_API_KEY: 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:37.7244036Z ##[endgroup]
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4969527Z ============================================================
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4970368Z REDDIT INTELLIGENCE WITH DEEPSEEK AI ANALYSIS
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4971072Z ============================================================
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4971788Z 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4972091Z [COMPREHENSIVE] ALL-IN-ONE MARKET INTELLIGENCE
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4972806Z Sources: Reddit + RSS + FMP
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4973363Z Time Horizon: day
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4973851Z DeepSeek Analysis: Yes
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4974405Z Method: All sources combined automatically
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4975084Z ============================================================
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4975766Z COMPREHENSIVE MARKET INTELLIGENCE WORKFLOW
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4976456Z ============================================================
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4977063Z Time Horizon: day
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4977544Z Sources: Reddit + RSS + FMP
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4978094Z DeepSeek Analysis: Yes
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4978417Z 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4978676Z [1/4] REDDIT: Trending market news discovery...
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4979580Z [ERROR] Comprehensive workflow failed: No module named 'yfinance'
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4980248Z 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4980459Z [OK] WORKFLOW COMPLETED
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4981015Z Reddit Posts Collected: 0
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4981689Z RSS Articles Collected: 0
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4982228Z RSS Sources: 0
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4982733Z Analysis Timestamp: 2025-11-23 21:35:38
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4983163Z 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4983390Z [REPORT] DEEPSEEK ANALYSIS GENERATED
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4983822Z 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4984025Z [FILES] OUTPUT FILES GENERATED:
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4984973Z   ΓÇó comprehensive_reddit_data_20251123_213538.json
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4985831Z   ΓÇó comprehensive_rss_data_20251123_213538.json
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4986651Z   ΓÇó comprehensive_fmp_data_20251123_213538.json
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4987519Z   ΓÇó deepseek_comprehensive_analysis_20251123_213538.txt
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4988031Z 
+run-analysis	Run Analysis Workflow	2025-11-23T21:35:38.4988263Z [DONE] Workflow completed successfully!
+run-analysis	Prepare GitHub Pages	∩╗┐2025-11-23T21:35:38.5410213Z ##[group]Run # Copy frontend files to outputs
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5410541Z [36;1m# Copy frontend files to outputs[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5410801Z [36;1mcp frontend/index.html outputs/[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5411042Z [36;1mcp frontend/app.js outputs/[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5411291Z [36;1mcp frontend/styles.css outputs/[0m
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430052Z shell: /usr/bin/bash -e {0}
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430279Z env:
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430522Z   pythonLocation: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5430900Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib/pkgconfig
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5431259Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5431753Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5432069Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.25/x64
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5432397Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.25/x64/lib
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5432664Z ##[endgroup]
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5480493Z cp: cannot create regular file 'outputs/': Not a directory
+run-analysis	Prepare GitHub Pages	2025-11-23T21:35:38.5493622Z ##[error]Process completed with exit code 1.
+run-analysis	Post Checkout	∩╗┐2025-11-23T21:35:38.5582096Z Post job cleanup.
+run-analysis	Post Checkout	2025-11-23T21:35:38.6426952Z [command]/usr/bin/git version
+run-analysis	Post Checkout	2025-11-23T21:35:38.6458325Z git version 2.51.2
+run-analysis	Post Checkout	2025-11-23T21:35:38.6496230Z Temporarily overriding HOME='/home/runner/work/_temp/d98547b1-f6ac-4740-8f89-9d62e4a0b607' before making global git config changes
+run-analysis	Post Checkout	2025-11-23T21:35:38.6497382Z Adding repository directory to the temporary git global config as a safe directory
+run-analysis	Post Checkout	2025-11-23T21:35:38.6502410Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reddit-intelligence/reddit-intelligence
+run-analysis	Post Checkout	2025-11-23T21:35:38.6533098Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+run-analysis	Post Checkout	2025-11-23T21:35:38.6560345Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+run-analysis	Post Checkout	2025-11-23T21:35:38.6735944Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+run-analysis	Post Checkout	2025-11-23T21:35:38.6751873Z http.https://github.com/.extraheader
+run-analysis	Post Checkout	2025-11-23T21:35:38.6762670Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+run-analysis	Post Checkout	2025-11-23T21:35:38.6786723Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+run-analysis	Post Checkout	2025-11-23T21:35:38.6952139Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+run-analysis	Post Checkout	2025-11-23T21:35:38.6977575Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+run-analysis	Complete job	∩╗┐2025-11-23T21:35:38.7254826Z Cleaning up orphan processes

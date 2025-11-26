@@ -12,24 +12,28 @@ Z:\Code\Backend\Stock\Reddit\
     └── ...
 ```
 
-## 🚀 Two Workflow Types
+## 🚀 Core Workflow Types
 
-### 1. **Stock Market Analysis Workflow**
-Analyzes multiple stocks with comprehensive market, political, and credible analysis
+### 1. **Comprehensive Market Intelligence**
+`python run_workflow.py --comprehensive --horizon day`
 
-### 2. **Keyword Analysis Workflow** ⭐ NEW!
-Analyze specific keywords: stocks, commodities, crypto, or any topic
-Examples: `gold`, `oil`, `bitcoin`, `AAPL`, `TSLA`
+All-in-one pipeline covering Reddit trending posts, RSS finance feeds, FMP quotes, and a macro snapshot (FRED dashboard + gold quote). Generates JSON artifacts plus `deepseek_comprehensive_analysis_*.txt`.
+
+### 2. **Stock Market Analysis Workflow**
+Analyzes specific tickers (Reddit + political news + credible DD + DeepSeek symbol/risk reports).
+
+### 3. **Keyword Analysis Workflow**
+Runs the Reddit intelligence stack on arbitrary keywords (commodities, crypto, sectors, themes, etc.).
 
 ## 📊 Features
 
 - ✅ Real Reddit data collection from multiple subreddits
-- ✅ Credibility scoring (0-10 scale) for posts
-- ✅ DeepSeek AI analysis for market insights
-- ✅ Symbol-specific investment analysis
-- ✅ Keyword-specific analysis (NEW!)
+- ✅ RSS ingest + AI topic discovery
+- ✅ FMP quotes + macro snapshot (FRED dashboard, gold quote, equity risk premium)
+- ✅ DeepSeek AI analysis for market + theme reports
+- ✅ Symbol/keyword-specific insights when requested
 - ✅ Comprehensive risk assessment
-- ✅ JSON and text report outputs
+- ✅ JSON/text outputs saved under `outputs/`
 
 ## 🚀 Quick Start
 
@@ -87,6 +91,15 @@ result = run_keyword_intelligence_with_deepseek_sync(
 **DeepSeek API Key**: Configured via environment variable `DEEPSEEK_API_KEY`
 
 Set in `.env` file or GitHub Secrets for production deployment.
+
+**Reddit Proxy (optional)**: Set `REDDIT_PROXY_URL` (or standard `HTTP(S)_PROXY`) if Reddit blocks the Cloud Run IP. All Reddit API calls will route through that proxy automatically.
+
+## ☁️ Cloud Deployments (Currently Disabled)
+
+- `ENABLE_GCS_UPLOADS` defaults to `false`, so workflow runs stay completely local. Set it to `true` (and provide `GCS_BUCKET_NAME`, `GCS_DEST_PREFIX`, and Google credentials) only when you explicitly want to sync artifacts to Cloud Storage.
+- GitHub Actions workflows (`deploy.yml`, `schedule.yml`) now check `ENABLE_CLOUD_DEPLOY` and `ENABLE_SCHEDULED_RELEASES`. Both are hard-coded to `'false'`, which keeps Cloud Run deploys and scheduled jobs off. Flip either flag to `'true'` inside the workflow file when you are ready to push to GCP again.
+
+With these guards in place you can run `python run_workflow.py ...` locally without hitting GCP or GitHub automation.
 
 ## 📤 Output Files
 

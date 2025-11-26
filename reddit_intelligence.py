@@ -44,7 +44,7 @@ import requests
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from openai import AsyncOpenAI
 
 # Add clients directory to path
@@ -68,6 +68,7 @@ FRED_API_KEY = os.environ.get('FRED_API_KEY')
 # Optional Google Cloud Storage configuration for output publishing
 GCS_BUCKET_NAME = os.environ.get('GCS_BUCKET_NAME')
 GCS_DEST_PREFIX = os.environ.get('GCS_DEST_PREFIX', '').strip('/')
+ENABLE_GCS_UPLOADS = os.environ.get('ENABLE_GCS_UPLOADS', 'false').lower() in ('1', 'true', 'yes')
 
 # =============================================================================
 # MEME STOCK FILTERING
@@ -350,6 +351,10 @@ def upload_outputs_to_gcs(result: Dict[str, Any], timestamp: str, local_files: D
         local_files: Mapping label -> Path for generated local artifacts.
         output_dir: Directory where artifacts are stored locally.
     """
+    if not ENABLE_GCS_UPLOADS:
+        print("[SKIP] ENABLE_GCS_UPLOADS is false; running fully local.")
+        return False
+
     if not GCS_BUCKET_NAME:
         return False
 
@@ -2327,28 +2332,6 @@ class RedditIntelligenceWorkflow:
         except Exception as e:
             print(f"        [WARNING] FMP Market Risk Premium failed: {e}")
 
-        # Sector Performance
-        try:
-            sectors = fmp.sector_performance_snapshot()
-            data['fmp']['sector_performance'] = sectors[:5] if sectors else [] # Top 5
-        except Exception as e:
-            print(f"        [WARNING] FMP Sector Performance failed: {e}")
-
-        # SPY Technicals
-        try:
-            print("        Fetching SPY technicals...")
-            spy_rsi = fmp.technical_rsi('SPY', period_length=14)
-            spy_sma50 = fmp.technical_sma('SPY', period_length=50)
-            spy_sma200 = fmp.technical_sma('SPY', period_length=200)
-            
-            data['fmp']['spy_technicals'] = {
-                'rsi': spy_rsi[0] if spy_rsi else {},
-                'sma50': spy_sma50[0] if spy_sma50 else {},
-                'sma200': spy_sma200[0] if spy_sma200 else {}
-            }
-        except Exception as e:
-            print(f"        [WARNING] FMP SPY Technicals failed: {e}")
-
         # Gold Price
         try:
             print("        Fetching Gold (GLD) price...")
@@ -2366,44 +2349,7 @@ class RedditIntelligenceWorkflow:
             print(f"        [WARNING] FRED data collection failed: {e}")
             data['fred']['error'] = str(e)
 
-        # 5. FMP General News
-        try:
-            print("        Fetching FMP General News...")
-            news = fmp.general_news()
-            
-            # Filter by time horizon
-            filtered_news = []
-            cutoff_time = 0
-            if time_horizon == 'day':
-                cutoff_time = time.time() - (24 * 3600)
-            elif time_horizon == 'week':
-                cutoff_time = time.time() - (7 * 24 * 3600)
-            elif time_horizon == 'month':
-                cutoff_time = time.time() - (30 * 24 * 3600)
-            
-            for item in news:
-                pub_date_str = item.get('publishedDate')
-                if pub_date_str:
-                    try:
-                        # FMP date format: "2025-01-10 14:30:00"
-                        pub_dt = datetime.strptime(pub_date_str, "%Y-%m-%d %H:%M:%S")
-                        pub_ts = pub_dt.timestamp()
-                        if pub_ts >= cutoff_time:
-                            filtered_news.append(item)
-                    except ValueError:
-                        continue # Skip invalid dates
-            
-            if not filtered_news and news:
-                 # Fallback if filtering removes everything (e.g. API returns older news)
-                 print(f"        [INFO] No FMP news in last {time_horizon}. Using top 5 latest.")
-                 filtered_news = news[:5]
-
-            data['fmp']['general_news'] = filtered_news[:10]
-            print(f"        Found {len(filtered_news)} relevant FMP news articles")
-
-        except Exception as e:
-            print(f"        Warning: Could not fetch FMP news: {e}")
-            data['fmp']['general_news'] = []
+        # Note: Sector snapshots, premium technicals, and FMP news endpoints are disabled for local runs
 
         print(f"[DONE] Macro and technical data collected")
         return data
@@ -2546,6 +2492,7 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
     1. Reddit trending news discovery
     2. RSS financial news scan
     3. FMP real-time market data
+    4. Macro + technical indicators (FMP/FRED/Gold)
 
     Args:
         time_horizon: Time period ('day', 'week', 'month')
@@ -2621,19 +2568,51 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
         print(f"     [OK] Collected {results['sources']['rss']['total_articles']} articles from {results['sources']['rss']['sources_count']} sources")
 
         # STEP 3: FMP MARKET DATA
-        print("[3/4] FMP: Real-time market data...")
-        fmp_data = {}
+        print("[3/5] FMP: Real-time market data...")
+        fmp_data: Dict[str, Any] = {}
 
         try:
-            # Create FMP client
             from fmp_stable_client import create_fmp_stable_client
             client = create_fmp_stable_client(FMP_API_KEY)
 
-            # Get stock list (using existing method)
-            stock_list = client.stock_list(limit=50)
-            fmp_data['stock_list'] = stock_list[:50]  # Limit to 50 stocks
+            def _clean_quotes(quotes: List[Dict]) -> List[Dict]:
+                cleaned: List[Dict[str, Any]] = []
+                for quote in quotes:
+                    symbol = quote.get('ticker') or quote.get('symbol') or quote.get('name')
+                    price = quote.get('price') or quote.get('priceRealtime') or quote.get('lastSalePrice')
+                    volume = quote.get('volume') or quote.get('avgVolume') or quote.get('volAvg')
+                    change_pct = quote.get('changesPercentage') or quote.get('changePercent')
+                    if not symbol or price in (None, 0):
+                        continue
+                    if volume is not None and volume < 10000:
+                        continue
+                    cleaned.append({
+                        'symbol': symbol,
+                        'price': round(float(price), 2) if isinstance(price, (int, float)) else price,
+                        'changesPercentage': round(float(change_pct), 2) if isinstance(change_pct, (int, float)) else change_pct,
+                        'volume': int(volume) if isinstance(volume, (int, float)) else volume
+                    })
+                return cleaned
 
-            print(f"     [OK] Retrieved {len(fmp_data['stock_list'])} stocks from FMP")
+            snapshot: List[Dict[str, Any]] = []
+            active_quotes: List[Dict[str, Any]] = []
+
+            try:
+                active_quotes = client.most_actives()
+            except Exception as active_error:
+                print(f"     [WARNING] FMP most actives failed: {active_error}")
+
+            if active_quotes:
+                snapshot = _clean_quotes(active_quotes)
+
+            if not snapshot:
+                fallback_quotes = client.stock_list(limit=200)
+                snapshot = _clean_quotes(fallback_quotes)
+
+            snapshot = snapshot[:50]
+            fmp_data['market_snapshot'] = snapshot
+
+            print(f"     [OK] Retrieved {len(snapshot)} liquid symbols from FMP")
 
         except Exception as e:
             print(f"     [WARNING] FMP data retrieval failed: {str(e)}")
@@ -2641,16 +2620,29 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
 
         results['sources']['fmp'] = fmp_data
 
-        # STEP 4: COMPREHENSIVE DEEPSEEK ANALYSIS
+        # STEP 4: MACRO + TECHNICAL DATA
+        print("[4/5] MACRO: Economic and technical indicators...")
+        macro_data = {}
+        try:
+            macro_data = await workflow.collect_macro_and_technical_data(time_horizon)
+            results['sources']['macro'] = macro_data
+            macro_sections = sum(bool(macro_data.get(section)) for section in ('fmp', 'fred', 'gold'))
+            print(f"     [OK] Collected macro snapshot ({macro_sections} data blocks)")
+        except Exception as e:
+            print(f"     [WARNING] Macro data collection failed: {str(e)}")
+            results['sources']['macro'] = {'error': str(e)}
+
+        # STEP 5: COMPREHENSIVE DEEPSEEK ANALYSIS
         if include_deepseek_analysis:
-            print("[4/4] DEEPSEEK: Comprehensive analysis...")
+            print("[5/5] DEEPSEEK: Comprehensive analysis...")
 
             # Prepare data for DeepSeek analysis
             reddit_posts = results['sources']['reddit']['trending_posts'][:20]  # Top 20 for analysis
             rss_articles = results['sources']['rss']['articles'][:15]  # Top 15 for analysis
+            macro_snapshot = results['sources'].get('macro', {})
 
             deepseek_context = _prepare_comprehensive_analysis_context(
-                reddit_posts, rss_articles, fmp_data, time_horizon,
+                reddit_posts, rss_articles, fmp_data, macro_snapshot, time_horizon,
                 rss_data_check=results['sources']['rss'].get('data_check_result', '')
             )
 
@@ -2673,8 +2665,14 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
         print(f"   RSS Articles: {results['sources']['rss']['total_articles']}")
         print(f"   RSS Sources: {results['sources']['rss']['sources_count']}")
 
-        if 'stock_list' in fmp_data:
-            print(f"   FMP Stocks: {len(fmp_data['stock_list'])}")
+        if 'market_snapshot' in fmp_data:
+            print(f"   FMP Symbols: {len(fmp_data['market_snapshot'])}")
+
+        macro_snapshot = results['sources'].get('macro', {})
+        if macro_snapshot and not macro_snapshot.get('error'):
+            print(f"   Macro Snapshot: {macro_snapshot.get('timestamp', 'available')}")
+        elif macro_snapshot.get('error'):
+            print(f"   Macro Snapshot: ERROR - {macro_snapshot['error']}")
 
         if include_deepseek_analysis and 'deepseek_analysis' in results:
             analysis = results['deepseek_analysis']
@@ -2700,14 +2698,15 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
             'by_type': {
                 'reddit_trending': total_posts,
                 'rss_articles': total_articles,
-                'fmp_stock_entries': len(results['sources'].get('fmp', {}).get('stock_list', []) or [])
+                'fmp_market_snapshot': len(results['sources'].get('fmp', {}).get('market_snapshot', []) or [])
             },
             'average_credibility_scores': {
                 'reddit': round(_avg_score(reddit_posts, 'credibility_score'), 2) if reddit_posts else 0,
                 'rss': round(_avg_score(rss_articles, 'credibility_score'), 2) if rss_articles else 0
             },
             'top_symbols': get_top_mentioned_symbols(reddit_posts),
-            'collection_timestamp': results['analysis_timestamp']
+            'collection_timestamp': results['analysis_timestamp'],
+            'macro_snapshot_timestamp': results.get('sources', {}).get('macro', {}).get('timestamp')
         }
 
         top_insights = build_insights_from_posts(reddit_posts + rss_articles, limit=20)
@@ -2771,11 +2770,27 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
             json.dump(fmp_data, f, indent=2, ensure_ascii=False)
         print(f"[SAVED] {fmp_file.name}")
 
+        # Save macro data
+        macro_snapshot = results.get('sources', {}).get('macro')
+        if macro_snapshot:
+            macro_file = output_dir / f'comprehensive_macro_data_{timestamp}.json'
+            with open(macro_file, 'w', encoding='utf-8') as f:
+                json.dump(macro_snapshot, f, indent=2, ensure_ascii=False)
+            print(f"[SAVED] {macro_file.name}")
+
         # Save DeepSeek comprehensive analysis
         if include_deepseek_analysis and 'deepseek_analysis' in results:
             analysis = results['deepseek_analysis']
             analysis_file = output_dir / f'deepseek_comprehensive_analysis_{timestamp}.txt'
             with open(analysis_file, 'w', encoding='utf-8') as f:
+                run_timestamp = results.get('analysis_timestamp', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                header = [
+                    "DEEPSEEK AI COMPREHENSIVE MARKET ANALYSIS",
+                    f"Generated At: {run_timestamp}",
+                    f"Time Horizon: {results.get('time_horizon', time_horizon)}",
+                    "",
+                ]
+                f.write("\n".join(header))
                 f.write(analysis.get('raw_analysis', ''))
             print(f"[SAVED] {analysis_file.name}")
 
@@ -2796,6 +2811,8 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
             'fmp': fmp_file,
             'overview': overview_file
         }
+        if macro_snapshot:
+            saved_files['macro'] = macro_file
         if include_deepseek_analysis and 'analysis_file' in locals():
             saved_files['deepseek'] = analysis_file
 
@@ -2817,7 +2834,7 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
         return results
 
 def _prepare_comprehensive_analysis_context(reddit_posts: List[Dict], rss_articles: List[Dict],
-                                           fmp_data: Dict, time_horizon: str,
+                                           fmp_data: Dict, macro_data: Dict, time_horizon: str,
                                            rss_data_check: str = "") -> str:
     """Prepare comprehensive context for DeepSeek analysis"""
 
@@ -2872,6 +2889,70 @@ def _prepare_comprehensive_analysis_context(reddit_posts: List[Dict], rss_articl
         context_parts.append("Top Losers:")
         for loser in movers.get('losers', [])[:3]:
             context_parts.append(f"  - {loser}")
+
+    stock_list = fmp_data.get('market_snapshot', [])
+    if stock_list:
+        context_parts.append("Top FMP Market Snapshot:")
+        for stock in stock_list[:5]:
+            context_parts.append(
+                (
+                    f"  - {stock.get('symbol', 'N/A')}: ${stock.get('price', 'N/A')} "
+                    f"({stock.get('changesPercentage', '0')}%) | Vol: {stock.get('volume', 'N/A')}"
+                )
+            )
+
+    context_parts.extend([
+        "",
+        "=== MACRO & TECHNICAL DATA ==="
+    ])
+
+    macro_fmp = macro_data.get('fmp', {}) if macro_data else {}
+    macro_fred = macro_data.get('fred', {}) if macro_data else {}
+
+    if macro_fmp.get('market_risk_premium'):
+        mrp = macro_fmp['market_risk_premium']
+        context_parts.append(
+            f"US Equity Risk Premium: {mrp.get('totalEquityRiskPremium', 'N/A')}% | Risk-Free: {mrp.get('riskFreeRate', 'N/A')}%"
+        )
+
+    if macro_fmp.get('sector_performance'):
+        context_parts.append("Top Sector Performance (FMP):")
+        for sector in macro_fmp['sector_performance'][:3]:
+            context_parts.append(f"  - {sector.get('sector', 'Unknown')}: {sector.get('changesPercentage', 'N/A')}%")
+
+    spy_data = macro_fmp.get('spy_technicals', {})
+    if spy_data:
+        context_parts.append(
+            "SPY Technicals: "
+            f"RSI {spy_data.get('rsi', {}).get('value', 'N/A')}, "
+            f"SMA50 {spy_data.get('sma50', {}).get('value', 'N/A')}, "
+            f"SMA200 {spy_data.get('sma200', {}).get('value', 'N/A')}"
+        )
+
+    if macro_data.get('gold'):
+        gold_quote = macro_data['gold']
+        context_parts.append(f"Gold (GLD) Price: {gold_quote.get('price', gold_quote.get('previousClose', 'N/A'))}")
+
+    def _fred_line(key: str, label: str) -> Optional[str]:
+        metric = macro_fred.get(key, {})
+        if metric:
+            value = metric.get('value', 'N/A')
+            change = metric.get('change', '')
+            if change:
+                return f"{label}: {value} ({change})"
+            return f"{label}: {value}"
+        return None
+
+    fred_lines = [
+        _fred_line('inflation_cpi', 'Inflation (CPI)'),
+        _fred_line('fed_funds', 'Fed Funds Rate'),
+        _fred_line('10y_treasury', '10Y Treasury Yield'),
+        _fred_line('vix', 'VIX'),
+        _fred_line('unemployment', 'Unemployment Rate')
+    ]
+
+    fred_lines = [line for line in fred_lines if line]
+    context_parts.extend(fred_lines)
 
     context_parts.extend([
         "",
