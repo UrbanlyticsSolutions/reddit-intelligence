@@ -1,6 +1,7 @@
 # Service Account Keys - NEVER commit these
 *.json
 !package-lock.json
+!frontend/latest.json
 
 # Environment variables
 .env
