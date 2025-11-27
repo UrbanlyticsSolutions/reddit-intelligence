@@ -2,7 +2,7 @@
 
 # 1. Run the workflow
 Write-Host "Starting Reddit Intelligence Workflow..."
-python run_workflow.py --comprehensive --horizon day --no-deepseek
+python run_workflow.py --comprehensive --horizon day
 
 # 2. Find the latest output file
 $latestFile = Get-ChildItem -Path "outputs" -Filter "comprehensive_reddit_data_*.json" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
