@@ -70,6 +70,17 @@
       topSymbolsEl.textContent = '—';
     }
 
+    const marketStatusEl = document.getElementById('marketStatus');
+    if (marketStatusEl) {
+        if (summary.market_status) {
+            const isOpen = summary.market_status.isTheStockMarketOpen;
+            marketStatusEl.textContent = isOpen ? 'Open' : 'Closed';
+            marketStatusEl.className = `summary-value ${isOpen ? 'status-open' : 'status-closed'}`;
+        } else {
+            marketStatusEl.textContent = '—';
+        }
+    }
+
     collectionBreakdownEl.innerHTML = '';
     Object.entries(summary.by_type || {}).forEach(([key, value]) => {
       const li = document.createElement('li');

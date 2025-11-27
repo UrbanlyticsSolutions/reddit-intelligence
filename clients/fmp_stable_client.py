@@ -700,6 +700,10 @@ class FMPStableClient:
         """Most heavily traded stocks"""
         return self._get("most-actives")
 
+    def market_hours(self) -> List[Dict]:
+        """Check if market is open"""
+        return self._get("is-the-market-open")
+
     # ==================== 14. TECHNICAL INDICATORS (9 endpoints) ====================
 
     def technical_sma(self, symbol: str, period_length: int, timeframe: str = "daily") -> List[Dict]:

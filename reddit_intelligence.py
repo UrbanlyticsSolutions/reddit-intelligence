@@ -396,6 +396,8 @@ def upload_outputs_to_gcs(result: Dict[str, Any], timestamp: str, local_files: D
         _upload(path, content_type)
 
     if result.get('deepseek_market_analysis') or result.get('deepseek_symbol_analyses') or result.get('deepseek_risk_assessment'):
+        print(f"[DEBUG] Found DeepSeek analysis keys: {list(result.keys())}")
+        print(f"[DEBUG] Market Analysis length: {len(result.get('deepseek_market_analysis', ''))}")
         latest_payload = {
             'timestamp': timestamp,
             'generated_at': datetime.utcnow().isoformat() + 'Z',
@@ -2614,6 +2616,14 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
 
             print(f"     [OK] Retrieved {len(snapshot)} liquid symbols from FMP")
 
+            # Fetch market status
+            try:
+                market_status = client.market_hours()
+                fmp_data['market_status'] = market_status
+                print(f"     [OK] Retrieved market status")
+            except Exception as status_error:
+                print(f"     [WARNING] FMP market status failed: {status_error}")
+
         except Exception as e:
             print(f"     [WARNING] FMP data retrieval failed: {str(e)}")
             fmp_data['error'] = str(e)
@@ -2706,7 +2716,8 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
             },
             'top_symbols': get_top_mentioned_symbols(reddit_posts),
             'collection_timestamp': results['analysis_timestamp'],
-            'macro_snapshot_timestamp': results.get('sources', {}).get('macro', {}).get('timestamp')
+            'macro_snapshot_timestamp': results.get('sources', {}).get('macro', {}).get('timestamp'),
+            'market_status': results.get('sources', {}).get('fmp', {}).get('market_status')
         }
 
         top_insights = build_insights_from_posts(reddit_posts + rss_articles, limit=20)
@@ -2728,7 +2739,18 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
         risk_text = "\n".join(risk_lines)
 
         actionable = analysis.get('actionable_insights') or []
-        symbol_analyses = {f"Insight {idx}": insight for idx, insight in enumerate(actionable, 1)}
+        actionable = analysis.get('actionable_insights') or []
+        symbol_analyses = {}
+        for idx, insight in enumerate(actionable, 1):
+            if ':' in insight:
+                parts = insight.split(':', 1)
+                key = parts[0].strip()
+                # Clean up key if it has bullet points or bold markers
+                key = key.replace('*', '').replace('-', '').strip()
+                val = parts[1].strip()
+                symbol_analyses[key] = val
+            else:
+                symbol_analyses[f"Insight {idx}"] = insight
 
         results['deepseek_market_analysis'] = market_text
         results['deepseek_symbol_analyses'] = symbol_analyses
@@ -2747,7 +2769,10 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
                 'trending_posts': reddit_data.get('trending_posts', []),
                 'summary': reddit_data.get('summary', {}),
                 'total_posts': reddit_data.get('total_posts', 0),
-                'timestamp': results.get('analysis_timestamp', '')
+                'timestamp': results.get('analysis_timestamp', ''),
+                'deepseek_market_analysis': results.get('deepseek_market_analysis', ''),
+                'deepseek_symbol_analyses': results.get('deepseek_symbol_analyses', {}),
+                'deepseek_risk_assessment': results.get('deepseek_risk_assessment', '')
             }, f, indent=2, ensure_ascii=False)
         print(f"\n[SAVED] {reddit_file.name}")
 
@@ -2961,7 +2986,7 @@ def _prepare_comprehensive_analysis_context(reddit_posts: List[Dict], rss_articl
         "2. KEY THEMES: What are the major themes/topics across ALL sources?",
         "3. MARKET SIGNALS: What are the important market signals and catalysts?",
         "4. RISK ASSESSMENT: What are the primary risks and opportunities?",
-        "5. ACTIONABLE INSIGHTS: What should investors/traders watch or do?",
+        "5. ACTIONABLE INSIGHTS: What should investors/traders watch or do? (Format: 'SYMBOL: Insight' or 'SECTOR: Insight')",
         "",
         "Provide specific, actionable analysis combining insights from all data sources."
     ])
