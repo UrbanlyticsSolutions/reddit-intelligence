@@ -10,11 +10,10 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: us-central1
   REPO_NAME: reddit-intelligence
-  ENABLE_CLOUD_DEPLOY: 'false'  # Flip to 'true' when ready to deploy
+  ENABLE_CLOUD_DEPLOY: 'true'  # Flip to 'true' when ready to deploy
 
 jobs:
   deploy:
-    if: ${{ env.ENABLE_CLOUD_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
@@ -65,5 +64,6 @@ jobs:
             --set-env-vars FRED_API_KEY=${{ secrets.FRED_API_KEY }} \
             --set-env-vars DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }} \
             --set-env-vars GCS_BUCKET_NAME=stock-479103-deepseek-results \
+            --set-env-vars ENABLE_GCS_UPLOADS=true \
             --max-retries 0 \
             --task-timeout 30m

@@ -2616,13 +2616,24 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
 
             print(f"     [OK] Retrieved {len(snapshot)} liquid symbols from FMP")
 
-            # Fetch market status
+            # Fetch market status (Local Fallback)
             try:
-                market_status = client.market_hours()
+                print("     [DEBUG] Checking local market status...")
+                # client.market_hours() is failing with 403 on v3 endpoint
+                # Using local time check as fallback
+                now_utc = datetime.utcnow()
+                # Trading hours: 14:30 - 21:00 UTC (Mon-Fri)
+                is_weekday = now_utc.weekday() < 5
+                start_min = 14 * 60 + 30
+                end_min = 21 * 60
+                curr_min = now_utc.hour * 60 + now_utc.minute
+                is_open = is_weekday and (start_min <= curr_min <= end_min)
+                
+                market_status = {'isTheStockMarketOpen': is_open}
                 fmp_data['market_status'] = market_status
-                print(f"     [OK] Retrieved market status")
+                print(f"     [OK] Retrieved market status (Local): {'Open' if is_open else 'Closed'}")
             except Exception as status_error:
-                print(f"     [WARNING] FMP market status failed: {status_error}")
+                print(f"     [WARNING] Market status check failed: {status_error}")
 
         except Exception as e:
             print(f"     [WARNING] FMP data retrieval failed: {str(e)}")
@@ -2717,7 +2728,8 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
             'top_symbols': get_top_mentioned_symbols(reddit_posts),
             'collection_timestamp': results['analysis_timestamp'],
             'macro_snapshot_timestamp': results.get('sources', {}).get('macro', {}).get('timestamp'),
-            'market_status': results.get('sources', {}).get('fmp', {}).get('market_status')
+            'market_status': results.get('sources', {}).get('fmp', {}).get('market_status'),
+            'generated_at': datetime.utcnow().isoformat() + 'Z'
         }
 
         top_insights = build_insights_from_posts(reddit_posts + rss_articles, limit=20)
@@ -2767,7 +2779,7 @@ async def run_comprehensive_market_intelligence(time_horizon: str = 'week',
         with open(reddit_file, 'w', encoding='utf-8') as f:
             json.dump({
                 'trending_posts': reddit_data.get('trending_posts', []),
-                'summary': reddit_data.get('summary', {}),
+                'summary': results.get('summary', {}),
                 'total_posts': reddit_data.get('total_posts', 0),
                 'timestamp': results.get('analysis_timestamp', ''),
                 'deepseek_market_analysis': results.get('deepseek_market_analysis', ''),

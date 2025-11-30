@@ -21,5 +21,5 @@ ENV PYTHONUNBUFFERED=1
 
 # Run the workflow script when the container launches
 # Default to comprehensive analysis for the day
-ENTRYPOINT ["python", "run_workflow.py"]
-CMD ["--comprehensive", "--horizon", "day"]
+ENTRYPOINT ["python", "main.py"]
+CMD ["--no-deploy", "--horizon", "day"]

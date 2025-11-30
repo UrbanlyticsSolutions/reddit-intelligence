@@ -702,7 +702,12 @@ class FMPStableClient:
 
     def market_hours(self) -> List[Dict]:
         """Check if market is open"""
-        return self._get("is-the-market-open")
+        # This endpoint is only available on v3, not stable
+        url = "https://financialmodelingprep.com/api/v3/is-the-market-open"
+        params = {"apikey": self.api_key}
+        response = requests.get(url, params=params, timeout=30)
+        response.raise_for_status()
+        return response.json()
 
     # ==================== 14. TECHNICAL INDICATORS (9 endpoints) ====================
 

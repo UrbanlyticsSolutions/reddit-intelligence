@@ -14,11 +14,10 @@ on:
 
 env:
   GCS_BUCKET_NAME: stock-479103-deepseek-results
-  ENABLE_SCHEDULED_RELEASES: 'false'  # Set to 'true' to re-enable automation
+  ENABLE_SCHEDULED_RELEASES: 'true'  # Set to 'true' to re-enable automation
 
 jobs:
   run-analysis:
-    if: ${{ env.ENABLE_SCHEDULED_RELEASES == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Needed for pushing to gh-pages
