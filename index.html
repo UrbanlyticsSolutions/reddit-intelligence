@@ -5,86 +5,114 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reddit Intelligence – DeepSeek Insights</title>
+  <title>Market Intelligence Dashboard</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body data-endpoint="latest.json">
-  <header class="page-header">
-    <div class="header-text">
-      <h1>Reddit Intelligence</h1>
-      <p>Live DeepSeek-generated market intelligence from the Google Cloud workflow.</p>
-    </div>
-    <button id="refreshButton" class="ghost-button" type="button">Refresh</button>
-  </header>
-
-  <main>
-    <section class="status-banner" id="statusBanner" hidden>
-      <span id="statusMessage"></span>
-    </section>
-
-    <section class="summary-card">
-      <div class="summary-grid">
-        <div class="summary-item">
-          <span class="summary-label">Generated</span>
-          <span class="summary-value" id="generatedAt">—</span>
+<body>
+  <div class="app-container">
+    <header class="page-header">
+      <div class="header-content">
+        <div class="header-title">
+          <h1>Market Intelligence</h1>
+          <p class="subtitle">AI-Powered Real-Time Analysis</p>
         </div>
-        <div class="summary-item">
-          <span class="summary-label">Run Timestamp</span>
-          <span class="summary-value" id="runTimestamp">—</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Posts</span>
-          <span class="summary-value" id="totalPosts">—</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Top Symbols</span>
-          <span class="summary-value" id="topSymbols">—</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Market Status</span>
-          <span class="summary-value" id="marketStatus">—</span>
+        <div class="header-actions">
+          <div class="status-indicator" id="statusBanner" hidden>
+            <span class="status-dot"></span>
+            <span id="statusMessage"></span>
+          </div>
+          <div class="controls">
+            <select id="historySelect" class="history-select">
+              <option value="">Latest Run</option>
+            </select>
+            <button id="refreshButton" class="icon-button" aria-label="Refresh">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="summary-breakdown">
-        <div>
-          <h3>Collection Breakdown</h3>
-          <ul id="collectionBreakdown"></ul>
+    </header>
+
+    <main class="dashboard-grid">
+      <!-- Top Row: Summary Stats -->
+      <section class="summary-card full-width">
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="stat-label">Market Status</span>
+            <span class="stat-value" id="marketStatus">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Posts</span>
+            <span class="stat-value" id="totalPosts">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Top Symbols</span>
+            <span class="stat-value" id="topSymbols">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Last Updated</span>
+            <span class="stat-value small" id="generatedAt">—</span>
+          </div>
         </div>
-        <div>
-          <h3>Average Credibility</h3>
-          <ul id="credibilityBreakdown"></ul>
+        
+        <div class="breakdown-grid">
+          <div class="breakdown-col">
+            <h4>Data Sources</h4>
+            <ul id="collectionBreakdown" class="pill-list"></ul>
+          </div>
+          <div class="breakdown-col">
+            <h4>Credibility Scores</h4>
+            <ul id="credibilityBreakdown" class="pill-list"></ul>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel">
-      <h2>DeepSeek Market Analysis</h2>
-      <article class="analysis-block" id="marketAnalysis">Loading…</article>
-    </section>
+      <!-- Middle Row: DeepSeek Analysis -->
+      <section class="panel analysis-panel">
+        <div class="panel-header">
+          <h2>Market Analysis</h2>
+          <span class="ai-badge">DeepSeek AI</span>
+        </div>
+        <div class="analysis-content" id="marketAnalysis">
+          <div class="loading-state">Waiting for analysis...</div>
+        </div>
+      </section>
 
-    <section class="panel">
-      <h2>DeepSeek Risk Assessment</h2>
-      <article class="analysis-block" id="riskAssessment">Loading…</article>
-    </section>
+      <section class="panel risk-panel">
+        <div class="panel-header">
+          <h2>Risk Assessment</h2>
+          <span class="ai-badge warning">Risk Profile</span>
+        </div>
+        <div class="analysis-content" id="riskAssessment">
+          <div class="loading-state">Waiting for assessment...</div>
+        </div>
+      </section>
 
-    <section class="panel">
-      <h2>DeepSeek Symbol Analyses</h2>
-      <div id="symbolAnalyses" class="symbol-grid"></div>
-    </section>
+      <!-- Bottom Row: Detailed Insights -->
+      <section class="panel full-width">
+        <div class="panel-header">
+          <h2>Symbol Specific Analysis</h2>
+        </div>
+        <div id="symbolAnalyses" class="symbol-grid"></div>
+      </section>
 
-    <section class="panel">
-      <h2>Top Retail Insights</h2>
-      <ol id="topInsights" class="insights-list"></ol>
-    </section>
-  </main>
+      <section class="panel full-width">
+        <div class="panel-header">
+          <h2>Top Retail Insights</h2>
+        </div>
+        <div id="topInsights" class="insights-grid"></div>
+      </section>
+    </main>
 
-  <footer class="page-footer">
-    <small>
-      Hosted on GitHub Pages. Data sourced from Cloud Run job uploads to Google Cloud Storage.
-      Configure alternate sources with <code>?source=&lt;url&gt;</code>.
-    </small>
-  </footer>
+    <footer class="page-footer">
+      <p>Generated by Reddit Intelligence Workflow</p>
+      <p class="meta-info">Run Timestamp: <span id="runTimestamp">—</span></p>
+    </footer>
+  </div>
 
   <script src="app.js" defer></script>
 </body>
