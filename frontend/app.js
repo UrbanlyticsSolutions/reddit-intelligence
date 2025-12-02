@@ -5,231 +5,244 @@
   const userEndpoint = params.get('source')?.trim();
   const endpoint = userEndpoint || defaultEndpoint;
 
+  // UI Elements
   const statusBanner = document.getElementById('statusBanner');
   const statusMessage = document.getElementById('statusMessage');
   const refreshButton = document.getElementById('refreshButton');
+  const historySelect = document.getElementById('historySelect');
 
+  // Data Elements
   const generatedAtEl = document.getElementById('generatedAt');
   const runTimestampEl = document.getElementById('runTimestamp');
   const totalPostsEl = document.getElementById('totalPosts');
   const topSymbolsEl = document.getElementById('topSymbols');
+  const marketStatusEl = document.getElementById('marketStatus');
   const collectionBreakdownEl = document.getElementById('collectionBreakdown');
   const credibilityBreakdownEl = document.getElementById('credibilityBreakdown');
+
+  // Analysis Elements
   const marketAnalysisEl = document.getElementById('marketAnalysis');
   const riskAssessmentEl = document.getElementById('riskAssessment');
   const symbolAnalysesEl = document.getElementById('symbolAnalyses');
   const topInsightsEl = document.getElementById('topInsights');
 
-  function setStatus(message, type) {
+  function setStatus(message, type = 'info') {
     if (!message) {
       statusBanner.hidden = true;
-      statusBanner.className = 'status-banner';
-      statusMessage.textContent = '';
       return;
     }
-
     statusBanner.hidden = false;
-    statusBanner.className = `status-banner ${type}`.trim();
+    statusBanner.className = `status-indicator ${type}`;
     statusMessage.textContent = message;
+
+    // Auto-hide after 5 seconds if it's just info
+    if (type === 'info') {
+      setTimeout(() => {
+        statusBanner.hidden = true;
+      }, 5000);
+    }
   }
 
   function formatDate(value) {
     if (!value) return '—';
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return value;
-    }
-    return date.toLocaleString(undefined, {
-      year: 'numeric',
+    if (Number.isNaN(date.getTime())) return value;
+
+    return new Intl.DateTimeFormat('en-US', {
       month: 'short',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    }).format(date);
   }
 
-  function textFallback(value, fallback = '—') {
-    if (value === null || value === undefined) return fallback;
-    if (typeof value === 'string' && value.trim() === '') return fallback;
-    return value;
+  function formatNumber(num) {
+    return new Intl.NumberFormat('en-US').format(num);
   }
 
-  function renderSummary(summary = {}, totalPostsFallback = '—') {
-    generatedAtEl.textContent = formatDate(summary.generated_at);
-    runTimestampEl.textContent = summary.collection_timestamp
-      ? formatDate(summary.collection_timestamp)
-      : textFallback(summary.timestamp);
+  function renderSummary(summary = {}) {
+    generatedAtEl.textContent = formatDate(summary.generated_at || Date.now());
+    runTimestampEl.textContent = formatDate(summary.collection_timestamp || summary.timestamp);
+    totalPostsEl.textContent = formatNumber(summary.total_posts_collected || 0);
 
-    totalPostsEl.textContent = summary.total_posts_collected ?? totalPostsFallback;
-
+    // Top Symbols
     if (Array.isArray(summary.top_symbols) && summary.top_symbols.length) {
       topSymbolsEl.textContent = summary.top_symbols
-        .map(([symbol, count]) => `${symbol} (${count})`)
+        .slice(0, 3)
+        .map(([symbol]) => symbol)
         .join(', ');
     } else {
       topSymbolsEl.textContent = '—';
     }
 
-    const marketStatusEl = document.getElementById('marketStatus');
-    if (marketStatusEl) {
-        if (summary.market_status) {
-            const isOpen = summary.market_status.isTheStockMarketOpen;
-            marketStatusEl.textContent = isOpen ? 'Open' : 'Closed';
-            marketStatusEl.className = `summary-value ${isOpen ? 'status-open' : 'status-closed'}`;
-        } else {
-            marketStatusEl.textContent = '—';
-        }
+    // Market Status
+    if (summary.market_status) {
+      const isOpen = summary.market_status.isTheStockMarketOpen;
+      marketStatusEl.textContent = isOpen ? 'Open' : 'Closed';
+      marketStatusEl.className = `stat-value ${isOpen ? 'status-open' : 'status-closed'}`;
+    } else {
+      marketStatusEl.textContent = '—';
     }
 
-    collectionBreakdownEl.innerHTML = '';
-    Object.entries(summary.by_type || {}).forEach(([key, value]) => {
-      const li = document.createElement('li');
-      li.textContent = `${key.replace('_', ' ')}: ${value}`;
-      collectionBreakdownEl.appendChild(li);
-    });
+    // Breakdowns
+    renderList(collectionBreakdownEl, summary.by_type, (key, val) =>
+      `${key.replace(/_/g, ' ')}: ${val}`
+    );
 
-    credibilityBreakdownEl.innerHTML = '';
-    Object.entries(summary.average_credibility_scores || {}).forEach(([key, value]) => {
+    renderList(credibilityBreakdownEl, summary.average_credibility_scores, (key, val) =>
+      `${key}: ${Number(val).toFixed(1)}/10`
+    );
+  }
+
+  function renderList(container, data, formatter) {
+    container.innerHTML = '';
+    if (!data) return;
+
+    Object.entries(data).forEach(([key, value]) => {
       const li = document.createElement('li');
-      li.textContent = `${key.replace('_', ' ')}: ${Number(value).toFixed(2)}`;
-      credibilityBreakdownEl.appendChild(li);
+      li.textContent = formatter(key, value);
+      container.appendChild(li);
     });
   }
 
   function renderAnalyses(data) {
-    marketAnalysisEl.textContent = textFallback(data.deepseek_market_analysis, 'No market analysis available.');
-    riskAssessmentEl.textContent = textFallback(data.deepseek_risk_assessment, 'No risk assessment available.');
+    // Market Analysis
+    if (data.deepseek_market_analysis) {
+      marketAnalysisEl.innerHTML = data.deepseek_market_analysis;
+    } else {
+      marketAnalysisEl.innerHTML = '<div class="loading-state">No market analysis available.</div>';
+    }
 
+    // Risk Assessment
+    if (data.deepseek_risk_assessment) {
+      riskAssessmentEl.innerHTML = data.deepseek_risk_assessment;
+    } else {
+      riskAssessmentEl.innerHTML = '<div class="loading-state">No risk assessment available.</div>';
+    }
+
+    // Symbol Analysis
     symbolAnalysesEl.innerHTML = '';
     const analyses = data.deepseek_symbol_analyses || {};
-    if (analyses && Object.keys(analyses).length) {
+
+    if (Object.keys(analyses).length) {
       Object.entries(analyses).forEach(([symbol, analysis]) => {
         const card = document.createElement('article');
         card.className = 'symbol-card';
-        const title = document.createElement('h3');
-        title.textContent = symbol;
-        const body = document.createElement('p');
-        body.textContent = analysis;
-        card.appendChild(title);
-        card.appendChild(body);
+        card.innerHTML = `
+          <h3>${symbol}</h3>
+          <p>${analysis}</p>
+        `;
         symbolAnalysesEl.appendChild(card);
       });
     } else {
-      const empty = document.createElement('p');
-      empty.className = 'empty-state';
-      empty.textContent = 'No symbol-specific analyses available for this run.';
-      symbolAnalysesEl.appendChild(empty);
+      symbolAnalysesEl.innerHTML = '<div class="loading-state full-width">No symbol-specific analyses.</div>';
     }
   }
 
   function renderInsights(insights = []) {
     topInsightsEl.innerHTML = '';
+
     if (!Array.isArray(insights) || !insights.length) {
-      const empty = document.createElement('p');
-      empty.className = 'empty-state';
-      empty.textContent = 'No Reddit insights collected for this run.';
-      const wrapper = document.createElement('li');
-      wrapper.appendChild(empty);
-      topInsightsEl.appendChild(wrapper);
+      topInsightsEl.innerHTML = '<div class="loading-state full-width">No insights collected.</div>';
       return;
     }
 
     insights.slice(0, 12).forEach((insight) => {
-      const li = document.createElement('li');
       const card = document.createElement('div');
       card.className = 'insight-card';
 
-      const header = document.createElement('header');
-      const title = document.createElement('h3');
-      title.textContent = insight.title || 'Untitled insight';
-      header.appendChild(title);
+      const metaHtml = [
+        insight.symbol ? `<span class="meta-tag">${insight.symbol}</span>` : '',
+        insight.source ? `<span class="meta-tag">${insight.source}</span>` : '',
+        insight.credibility_score ? `<span class="meta-tag">Cred: ${Number(insight.credibility_score).toFixed(1)}</span>` : ''
+      ].join('');
 
-      if (insight.symbol) {
-        const badge = document.createElement('span');
-        badge.className = 'badge';
-        badge.textContent = insight.symbol;
-        header.appendChild(badge);
-      }
+      card.innerHTML = `
+        <div class="insight-header">
+          <h3>${insight.title || 'Untitled Insight'}</h3>
+        </div>
+        <div class="insight-meta">${metaHtml}</div>
+        <p class="insight-content">${insight.content || 'No content provided.'}</p>
+        ${insight.url ? `
+          <a href="${insight.url}" target="_blank" rel="noopener" class="insight-link">
+            Open Discussion
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        ` : ''}
+      `;
 
-      if (insight.source) {
-        const badge = document.createElement('span');
-        badge.className = 'badge source';
-        badge.textContent = insight.source;
-        header.appendChild(badge);
-      }
-
-      const meta = document.createElement('div');
-      meta.className = 'insight-meta';
-      if (insight.created_time) meta.appendChild(createMetaChip('Captured', insight.created_time));
-      if (typeof insight.credibility_score === 'number') meta.appendChild(createMetaChip('Credibility', Number(insight.credibility_score).toFixed(2)));
-      if (typeof insight.composite_score === 'number') meta.appendChild(createMetaChip('Composite', Number(insight.composite_score).toFixed(2)));
-      if (insight.type) meta.appendChild(createMetaChip('Type', insight.type.replace('_', ' ')));
-
-      const body = document.createElement('p');
-      body.textContent = insight.content || 'No content provided.';
-
-      card.appendChild(header);
-      card.appendChild(meta);
-      card.appendChild(body);
-
-      if (insight.url) {
-        const link = document.createElement('a');
-        link.href = insight.url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = 'Open original discussion →';
-        card.appendChild(link);
-      }
-
-      li.appendChild(card);
-      topInsightsEl.appendChild(li);
+      topInsightsEl.appendChild(card);
     });
   }
 
-  function createMetaChip(label, value) {
-    const span = document.createElement('span');
-    span.textContent = `${label}: ${value}`;
-    return span;
-  }
-
-  async function fetchLatest() {
-    if (!endpoint) {
-      setStatus('No data source configured. Provide a bucket JSON URL via ?source=…', 'error');
-      return;
+  async function fetchData(url) {
+    if (!url) {
+      // Try to load latest.json by default if no URL provided
+      url = 'latest.json';
     }
 
-    setStatus('Fetching latest DeepSeek analysis…', 'info');
+    setStatus('Updating data...', 'info');
+    refreshButton?.classList.add('spinning');
 
     try {
-      const antiCacheEndpoint = `${endpoint}${endpoint.includes('?') ? '&' : '?'}ts=${Date.now()}`;
-      const response = await fetch(antiCacheEndpoint, { cache: 'no-store' });
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+      const antiCacheUrl = `${url}?ts=${Date.now()}`;
+      const response = await fetch(antiCacheUrl, { cache: 'no-store' });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
       const payload = await response.json();
       const { summary = {} } = payload;
 
       renderSummary({
         ...summary,
-        generated_at: payload.generated_at || payload.generatedAt || summary.generated_at,
+        generated_at: payload.generated_at || summary.generated_at,
         timestamp: payload.timestamp,
-      }, payload.total_posts_collected);
+      });
+
       renderAnalyses(payload);
       renderInsights(payload.top_insights);
 
-      const updatedText = `Last updated ${formatDate(payload.generated_at || payload.generatedAt || Date.now())}`;
-      setStatus(updatedText, 'info');
+      setStatus(`Updated: ${formatDate(new Date())}`, 'info');
+
     } catch (error) {
-      console.error('Failed to load DeepSeek analysis', error);
-      setStatus(`Failed to load DeepSeek analysis: ${error.message}`, 'error');
+      console.error('Load failed:', error);
+      setStatus(`Failed to load data: ${error.message}`, 'error');
+    } finally {
+      refreshButton?.classList.remove('spinning');
     }
   }
 
-  refreshButton?.addEventListener('click', fetchLatest);
+  async function loadHistory() {
+    try {
+      const response = await fetch('history.json', { cache: 'no-store' });
+      if (!response.ok) return;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fetchLatest);
-  } else {
-    fetchLatest();
+      const history = await response.json();
+
+      // Reset options
+      historySelect.innerHTML = '<option value="latest.json">Latest Run</option>';
+
+      history.forEach(entry => {
+        const option = document.createElement('option');
+        option.value = `history/${entry.filename}`;
+        option.textContent = formatDate(entry.timestamp);
+        historySelect.appendChild(option);
+      });
+
+    } catch (e) {
+      console.warn('History load failed:', e);
+    }
   }
+
+  // Event Listeners
+  historySelect?.addEventListener('change', (e) => fetchData(e.target.value));
+  refreshButton?.addEventListener('click', () => fetchData(historySelect.value));
+
+  // Init
+  document.addEventListener('DOMContentLoaded', () => {
+    loadHistory();
+    fetchData(endpoint);
+  });
+
 })();

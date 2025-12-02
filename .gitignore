@@ -2,6 +2,8 @@
 *.json
 !package-lock.json
 !frontend/latest.json
+!frontend/history.json
+!frontend/history/*.json
 
 # Environment variables
 .env
