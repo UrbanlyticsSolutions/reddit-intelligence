@@ -1,5 +1,13 @@
 [
   {
+    "filename": "comprehensive_reddit_data_20251206_083229.json",
+    "timestamp": "2025-12-06 08:32"
+  },
+  {
+    "filename": "comprehensive_reddit_data_20251206_080247.json",
+    "timestamp": "2025-12-06 08:02"
+  },
+  {
     "filename": "comprehensive_reddit_data_20251206_080246.json",
     "timestamp": "2025-12-06 08:02"
   },
@@ -30,13 +38,5 @@
   {
     "filename": "comprehensive_reddit_data_20251205_230326.json",
     "timestamp": "2025-12-05 23:03"
-  },
-  {
-    "filename": "comprehensive_reddit_data_20251205_230305.json",
-    "timestamp": "2025-12-05 23:03"
-  },
-  {
-    "filename": "comprehensive_reddit_data_20251205_223338.json",
-    "timestamp": "2025-12-05 22:33"
   }
 ]
