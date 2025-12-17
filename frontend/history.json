@@ -1,5 +1,9 @@
 [
   {
+    "filename": "comprehensive_reddit_data_20251217_123248.json",
+    "timestamp": "2025-12-17 12:32"
+  },
+  {
     "filename": "comprehensive_reddit_data_20251217_120241.json",
     "timestamp": "2025-12-17 12:02"
   },
@@ -34,9 +38,5 @@
   {
     "filename": "comprehensive_reddit_data_20251217_080255.json",
     "timestamp": "2025-12-17 08:02"
-  },
-  {
-    "filename": "comprehensive_reddit_data_20251217_073251.json",
-    "timestamp": "2025-12-17 07:32"
   }
 ]
